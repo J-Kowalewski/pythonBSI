@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import threading
 import time
+
 """
     :author: Jakub Kowalewski
 """
@@ -23,8 +24,8 @@ def crawl(div):
     print('Link: ' + 'https://www.gry-online.pl' + link)
     title = div.find('h5').getText()
     print('Title: ' + title)
-    allP = div.findAll('p')
-    for p in allP:
+    plist = div.findAll('p')
+    for p in plist:
         print(p.text)
     print('\n')
 
