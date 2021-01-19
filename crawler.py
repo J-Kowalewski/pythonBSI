@@ -2,8 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import threading
 import time
-
-# Jakub Kowalewski
+"""
+    :author: Jakub Kowalewski
+"""
 
 url = 'https://www.gry-online.pl/newsroom/'
 r = requests.get(url)
@@ -12,7 +13,12 @@ divList = soup.findAll('div', {'class': 'box'})
 threads = []
 
 
-def function(div):
+def crawl(div):
+    """
+    gets hyperlink, title, author, date and summary of article from https://www.gry-online.pl
+    :param div: 1 div element from divList where divList = soup.findAll('div', {'class': 'box'})
+    :return: nothing
+    """
     link = div.find('a').get('href')
     print('Link: ' + 'https://www.gry-online.pl' + link)
     title = div.find('h5').getText()
@@ -24,11 +30,16 @@ def function(div):
 
 
 def main():
+    """
+    for every element of divList (maximum of 10) new thread is created and function crawl is called
+    program waits 0.001s for each thread to avoid problems with printing values
+    :return: nothing
+    """
     counter = 0
     for div in divList:
         if counter == 10:
             break
-        t = threading.Thread(target=function, args=(div,))
+        t = threading.Thread(target=crawl, args=(div,))
         threads.append(t)
         t.start()
         time.sleep(0.001)
